@@ -9,14 +9,17 @@ using namespace std;
 //          lineOfStars(0) returns ""
 // You may not use a loop.
 string lineOfStars(int n) {
-	return "fixme";
+    if (n <= 0) return "";
+    return "*" + lineOfStars(n - 1);
 }
 
 // Write a function power() that will
 //    compute the x to the power of n recursively
 // if the power is invalid, return 0
 float power(float x, int n) {
-	return -1;	
+    if (n < 0) return 0;       // invalid exponent
+    if (n == 0) return 1;      // base case
+    return x * power(x, n - 1);
 }
 
 /*
@@ -36,38 +39,52 @@ should display:
 ****
 
 */
-void stars(int n) {}
+void stars(int n) {
+    if (n <= 0) return;
+
+    // print top descending part
+    cout << lineOfStars(n) << endl;
+
+    stars(n - 1);  // recursive middle
+
+    // print bottom ascending part
+    if (n > 1)     // ensure middle star printed once only
+        cout << lineOfStars(n) << endl;
+}
 
 // Write a *recursive* function that will check if
 //    a string is a palindrome
-// Hint 1: you can call s.front() to get the first character of string and s.back() to get the last one
-// Hint 2: s.substr(i,j) gives you the substring of s. For example if s = Hello, s(1,s.length()-1) gives you ello
 bool isPalindromeR(string s)
 {
-	return false;
+    if (s.length() <= 1) return true;               // base case
+    if (s.front() != s.back()) return false;        // check ends
+    return isPalindromeR(s.substr(1, s.length() - 2)); // recurse inwards
 }
 
 
 // Write a function that will return the reverse of a string
-// The function should be recursive, you can use the substring
-//  methods from the previous function
+// The function should be recursive
 string reverse(string s)
 {
-	return "fixme"; 
+    if (s.length() <= 1) return s;
+    return s.back() + reverse(s.substr(1, s.length() - 2)) + s.front();
+    // Alternate simpler approach:
+    // return reverse(s.substr(1)) + s[0];
 }
 
 // Write a function that returns the sum of the decimal digits of n.
 // Example: sumDigits(12345) returns 15
 //          sumDigits(-4096) returns 19
-// You may not use a loop. Treat n as its absolute value.
+// Treat n as its absolute value.
 int sumDigits(int n) {
-    return -1; // fix this!
+    n = abs(n);                          // ensure positive
+    if (n < 10) return n;                // base case
+    return (n % 10) + sumDigits(n / 10); // recurse
 }
 
 // Write a function that returns how many times x appears
 // in the first n elements of the array arr.
-// Example: arr = {1,1,2}, n = 3, x = 1  returns 2
-// You may not use a loop.
 int countOccurrences(const int* arr, int n, int x) {
-    return -1; // fix this!
+    if (n == 0) return 0; // base case
+    return (arr[0] == x ? 1 : 0) + countOccurrences(arr + 1, n - 1, x);
 }
